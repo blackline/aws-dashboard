@@ -35,11 +35,8 @@ var awsDaemon = function (firebase) {
         rds: new aws.RDS()
     };
 
-    console.log("*** aws daemon start");
     async.series([
         function (callback) {
-            console.log("getting a list of ec2 resources");
-
             // Get a list of all ec2 instances
             locals.ec2.describeInstances(null, function (err, data) {
                 if (err) return callback(err);
@@ -67,8 +64,6 @@ var awsDaemon = function (firebase) {
             });
         },
         function (callback) {
-            console.log("getting a list of rds resources");
-
             // Get a list of all rds instances
             locals.rds.describeDBInstances(null, function (err, data) {
                 if (err) return callback(err);
@@ -88,7 +83,6 @@ var awsDaemon = function (firebase) {
         }
     ], function (err) {
         if (err) throw err;
-        console.log("*** aws daemon completed");
         setTimeout(awsDaemon, process.env.AWS_DAEMON_INTERVAL, locals.firebase);
     });
 };
