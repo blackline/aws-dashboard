@@ -1,0 +1,23 @@
+{
+  "name": "aws-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "postinstall": "./node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "async": "*",
+    "aws-sdk": "*",
+    "bower": "*",
+    "express": "3.2.0",
+    "firebase": "*",
+    "jade": "*",
+    "less-middleware": "*",
+    "underscore": "*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm":  "1.2.x"
+  }
+}

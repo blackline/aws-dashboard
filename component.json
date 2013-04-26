@@ -1,0 +1,14 @@
+{
+    "name": "aws-dashboard",
+    "version": "1.0.0",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "components"
+    ],
+    "dependencies": {
+        "backfire": "https://github.com/firebase/backfire.git",
+        "jquery-serialize-object": "~1.0.0",
+        "phpjs": "https://github.com/kvz/phpjs.git"
+    }
+}

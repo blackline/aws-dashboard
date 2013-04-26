@@ -1,0 +1,29 @@
+doctype 5
+html
+  head
+    title AWS Dashboard
+    link(href='/css/style.css', rel='stylesheet')
+    link(href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css', rel='stylesheet')
+    link(href='//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css', rel='stylesheet')
+  body
+    div.container-fluid
+        block content
+
+    script(src="//cdn.firebase.com/v0/firebase.js")
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js')
+    script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
+    script
+        Config = {};
+        Config.Firebase = {};
+        Config.Firebase.uri = "#{firebase.uri}";
+        Config.Firebase.authToken = "#{firebase.authToken}";
+    script(src="/components/backfire/backbone-firebase.js")
+    script(src="/components/jquery-serialize-object/jquery.serialize-object.js")
+    script(src="/components/phpjs/functions/misc/uniqid.js")
+    script(src='/js/script.js')
+
+    include templates/application
+    include templates/application-modal-edit
+    include templates/application-instance-modal-edit

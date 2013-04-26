@@ -1,0 +1,119 @@
+script#template-application(type="text/template").
+    <h2>
+        <%= name %>
+        <span style="font-size: 40%; display: inline-block; vertical-align: top">
+            <a target="_blank" href="http://<%= uri %>"><i class="icon-external-link"></i></a>
+            <i class="link edit-application icon-pencil text-warning" style="cursor: pointer" title="Edit the Application"></i>
+            <i class="add-instance icon-plus text-success" style="cursor: pointer" title="Add an Instance to this Application"></i>
+        </span>
+    </h2>
+
+    <% var ec2Instances = _.filter(instances, function(instance) { return (instance.product == 'ec2'); });
+    if (ec2Instances.length > 0) {
+        %>
+        <table class="table table-striped table-bordered">
+            <colgroup>
+                <col style="width: 175px" />
+                <col style="width: 175px" />
+                <col style="width: 125px" />
+                <col style="width: 75px" />
+                <col style="width: 150px" />
+                <col style="width: 125px" />
+                <col />
+                <col style="width: 100px; text-align: right" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>EC2 Instance Name</th>
+                    <th>Service</th>
+                    <th>Type</th>
+                    <th>State</th>
+                    <th>Security Groups</th>
+                    <th>Instance ID</th>
+                    <th>IP Address</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i in ec2Instances) {
+                    var instance = ec2Instances[i];
+                    if (_.isUndefined(instance.details)) {
+                        continue;
+                    }
+                    %>
+                    <tr>
+                        <td><%= instance.details.Tags.Name %></td>
+                        <td><%= instance.service %></td>
+                        <td><%= instance.details.InstanceType %></td>
+                        <td><%= instance.details.State.Name %></td>
+                        <td><%= _.pluck(instance.details.SecurityGroups, 'GroupName').join(', ') %></td>
+                        <td><%= instance.details.InstanceId %></td>
+                        <td><%= instance.details.PublicIpAddress %></td>
+                        <td>
+                            <button class="btn btn-danger remove-instance" data-instance-id="<%= instance.id %>"><i data-instance-id="<%= instance.id %>" class="icon-trash"></i></button>
+                        </td>
+                    </tr>
+                    <%
+                }
+                %>
+            </tbody>
+        </table>
+        <%
+    } %>
+
+    <% var rdsInstances = _.filter(instances, function(instance) { return (instance.product == 'rds'); });
+    if (rdsInstances.length > 0) {
+        %>
+        <table class="table table-striped table-bordered">
+            <colgroup>
+                <col style="width: 175px"/>
+                <col style="width: 175px"/>
+                <col style="width: 125px"/>
+                <col style="width: 75px"/>
+                <col style="width: 150px" />
+                <col style="width: 75px"/>
+                <col style="width: 75px"/>
+                <col style="width: 125px"/>
+                <col />
+                <col style="width: 100px; text-align: right" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>RDS Instance Name</th>
+                    <th>Service</th>
+                    <th>Type</th>
+                    <th>State</th>
+                    <th>Security Groups</th>
+                    <th>Storage</th>
+                    <th>Multi AZ</th>
+                    <th>Engine Version</th>
+                    <th>Address</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i in rdsInstances) {
+                    var instance = rdsInstances[i];
+                    if (_.isUndefined(instance.details)) {
+                        continue;
+                    }
+                    %>
+                    <tr>
+                        <td><%= instance.details.DBInstanceIdentifier %></td>
+                        <td><%= instance.service %></td>
+                        <td><%= instance.details.DBInstanceClass %></td>
+                        <td><%= instance.details.DBInstanceStatus %></td>
+                        <td><%= _.pluck(instance.details.DBSecurityGroups, 'DBSecurityGroupName').join(', ') %></td>
+                        <td><%= instance.details.AllocatedStorage %>GB</td>
+                        <td><%= instance.details.MultiAZ %></td>
+                        <td><%= instance.details.EngineVersion %></td>
+                        <td><%= instance.details.Endpoint.Address %></td>
+                        <td>
+                            <button class="btn btn-danger remove-instance" data-instance-id="<%= instance.id %>"><i data-instance-id="<%= instance.id %>" class="icon-trash"></i></button>
+                        </td>
+                    </tr>
+                    <%
+                } %>
+            </tbody>
+        </table>
+    <% } %>

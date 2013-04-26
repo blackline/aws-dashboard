@@ -1,0 +1,32 @@
+script#template-application-instance-modal-edit(type="text/template").
+    <div class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Add an Instance</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Instance</label>
+                    <div class="controls">
+                        <select name="id">
+                            <% for (var i in list) {
+                                %>
+                                <option value="<%= list[i] %>"><%= list[i] %></option>
+                                <%
+                            } %>
+                        </select>
+                    </div>
+
+                    <label class="control-label">Service Name</label>
+                    <div class="controls">
+                        <input type="text" name="service" value placeholder="Service" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success save" data-dismiss="modal" >Save</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>

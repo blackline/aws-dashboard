@@ -1,0 +1,29 @@
+script#template-application-modal-edit(type="text/template").
+    <div class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Edit an Application</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <input type="hidden" name="id" value="<%= id  %>" >
+                    <input type="hidden" name="serial" value="<%= serial %>" >
+
+                    <label class="control-label">Name</label>
+                    <div class="controls">
+                        <input type="text" name="name" value="<%= name %>" placeholder="Name" >
+                    </div>
+
+                    <label class="control-label">URI</label>
+                    <div class="controls">
+                        <input type="text" name="uri" value="<%= uri %>" placeholder="URI" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success save" data-dismiss="modal" >Save</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
