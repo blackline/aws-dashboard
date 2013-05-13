@@ -11,3 +11,10 @@ exports.index = function(req, res){
         }
     });
 };
+
+/**
+ * Keepalive
+ */
+exports.ping = function(req, res){
+    res.send('pong');
+};
