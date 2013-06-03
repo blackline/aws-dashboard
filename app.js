@@ -28,7 +28,6 @@ if ('development' == app.get('env')) {
 
 // setup the routes
 app.get('/', routes.index);
-app.get('/ping', routes.ping);
 
 // start the server
 http.createServer(app).listen(app.get('port'), function(){

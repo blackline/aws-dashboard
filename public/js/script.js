@@ -218,9 +218,4 @@ $(function(){
     });
 
     var Main = new MainView();
-
-    // Start the keepalive
-    setInterval(function () {
-        $.getJSON('/ping');
-    }, 30000);
 });
