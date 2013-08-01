@@ -10,11 +10,21 @@ script#template-application-instance-modal-edit(type="text/template").
                     <label class="control-label">Instance</label>
                     <div class="controls">
                         <select name="id">
-                            <% for (var i in list) {
+                            <option value="">--- Select an Instance ---</option>
+                            <% for (var type in list) {
                                 %>
-                                <option value="<%= list[i] %>"><%= list[i] %></option>
+                                <optgroup label="<%= type %>">
+                                    <%
+                                    for (var i=0; i < list[type].length; i++) {
+                                        %>
+                                        <option value="<%= list[type][i].name %>"><%= list[type][i].name %></option>
+                                        <%
+                                    }
+                                    %>
+                                </optgroup>
                                 <%
-                            } %>
+                                }
+                            %>
                         </select>
                     </div>
 

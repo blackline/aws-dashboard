@@ -14,7 +14,6 @@ script#template-application(type="text/template").
             </span>
         </h2>
 
-
         <% var ec2Instances = _.filter(instances, function(instance) { return (instance.product == 'ec2'); });
         if (ec2Instances.length > 0) {
             %>

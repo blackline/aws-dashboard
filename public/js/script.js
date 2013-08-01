@@ -131,9 +131,25 @@ $(function(){
 
         addInstance: function (e) {
             // Create a list of all available instances
-            var instancesList = [];
-            for (var i in this.instances.models) {
-                instancesList.push(this.instances.models[i].id);
+            var instancesList = {
+                EC2: [],
+                RDS: []
+            };
+
+            var instances = this.instances.getUnusedInstances();
+            for (var i in instances) {
+                var type;
+                if (instances[i].has('DBInstanceIdentifier')) {
+                    type = 'RDS';
+                } else if (instances[i].has('Hypervisor')) {
+                    type = 'EC2';
+                } else {
+                    console.log('Unknown instance type', instances[i]);
+                }
+
+                instancesList[type].push({
+                    name: instances[i].id
+                });
             }
 
             // Render the modal to the page
@@ -266,12 +282,36 @@ $(function(){
         initialize: function() {
             this.apps = new ApplicationList();
             this.instances = new InstanceList();
+
             this.listenTo(this.apps, 'add', this.addOne);
             this.listenTo(this.apps, 'reset', this.resetAll);
             this.listenTo(this.apps, 'sort', this.resetAll);
 
-            // Add an Application button
+            // Get a list of instances which are not used by any application
             var self = this;
+            this.instances.getUnusedInstances = function () {
+                var unusedInstances = [];
+                for (var i=0; i < self.instances.models.length; i++) {
+                    var instance = self.instances.models[i];
+                    var instanceIsUnused = true;
+                    for (var j=0; j < self.apps.models.length && instanceIsUnused; j++) {
+                        for (var k in self.apps.models[j].attributes.instances) {
+                            var appInstance = self.apps.models[j].attributes.instances[k];
+                            if (instance.attributes.id == appInstance.id) {
+                                instanceIsUnused = false;
+                            }
+                        }
+                    }
+
+                    if (instanceIsUnused) {
+                        unusedInstances.push(instance);
+                    }
+                }
+
+                return unusedInstances;
+            };
+
+            // Add an Application button
             $('.add-application').on('click', function () {
                 var application = new Application({
                     id: uniqid(),
