@@ -34,7 +34,14 @@ $(function(){
      */
     var InstanceList = Backbone.Firebase.Collection.extend({
         model: Instance,
-        firebase: firebaseConnection.child('instances')
+        firebase: firebaseConnection.child('instances'),
+        comparator: function (instance) {
+            if (instance.has('DBInstanceIdentifier')) {
+                return instance.get('DBInstanceIdentifier');
+            } else if (instance.has('Tags')) {
+                return strtolower(instance.get('Tags').name);
+            }
+        }
     });
 
     /**
@@ -45,6 +52,7 @@ $(function(){
         templateApplicationModal: _.template($('#template-application-modal-edit').html()),
         templateApplicationRemoveModal: _.template($('#template-application-modal-remove').html()),
         templateApplicationInstanceModal: _.template($('#template-application-instance-modal-edit').html()),
+        templateApplicationInstanceRemoveModal: _.template($('#template-application-instance-modal-remove').html()),
 
         modal: null,
 
@@ -175,7 +183,7 @@ $(function(){
                 product: product
             };
 
-            // Increment a serial valie to force backbone to save changes to the instance object
+            // Increment a serial value to force backbone to save changes to the instance object
             this.model.set({
                 instances: instances,
                 serial: (this.model.get('serial') + 1)
@@ -184,19 +192,43 @@ $(function(){
 
         removeInstance: function (e) {
             var instanceId = $(e.target).attr('data-instance-id');
-
             var instances = this.model.attributes.instances;
+            var instance = null;
             for (var i in instances) {
                 if (i == instanceId) {
-                    delete instances[i];
+                    instance = instances[i];
                 }
             }
 
-            // Increment a serial valie to force backbone to save changes to the instance object
-            this.model.set({
-                instances: instances,
-                serial: (this.model.get('serial') + 1)
+            this.modal = $(this.templateApplicationInstanceRemoveModal(instance)).appendTo('body');
+
+            // Save the form when the save button in modal is clicked
+            var self = this;
+            $(this.modal).on('click', '.save', function (e) {
+                // Remove the instance from the list
+                var instances = self.model.attributes.instances;
+                for (var i in instances) {
+                    if (i == instanceId) {
+                        delete instances[i];
+                    }
+                }
+
+                // Increment a serial value to force backbone to save changes to the instance object
+                self.model.set({
+                    instances: instances,
+                    serial: (self.model.get('serial') + 1)
+                });
             });
+            $(this.modal).on('submit', 'form', function(e) { e.preventDefault(); });
+
+            // Destroy the modal after it is closed
+            $(this.modal).on('hidden', function () {
+                $(this).unbind().remove();
+            });
+
+            // Display the modal
+            this.modal.modal();
+            return this;
         },
 
         removeApp: function (e) {
@@ -237,7 +269,6 @@ $(function(){
             this.listenTo(this.apps, 'add', this.addOne);
             this.listenTo(this.apps, 'reset', this.resetAll);
             this.listenTo(this.apps, 'sort', this.resetAll);
-            this.listenTo(this.apps, 'change', this.apps.sort);
 
             // Add an Application button
             var self = this;

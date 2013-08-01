@@ -7,7 +7,7 @@ html
     link(href='//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css', rel='stylesheet')
     meta(http-equiv="refresh",content="300; url=/")
   body
-    div.container-fluid
+    div.container-fluid(style="margin-top: 10px")
         block content
 
     script(src="//cdn.firebase.com/v0/firebase.js")
@@ -15,7 +15,7 @@ html
     script(src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js')
     script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
-    script
+    script.
         Config = {};
         Config.Firebase = {};
         Config.Firebase.uri = "#{firebase.uri}";
@@ -24,9 +24,10 @@ html
     script(src="/components/jquery-serialize-object/jquery.serialize-object.js")
     script(src="/components/phpjs/functions/misc/uniqid.js")
     script(src="/components/phpjs/functions/strings/strtolower.js")
-    script(src='/js/script.js')
+    script(src="/js/script.js")
 
     include templates/application
     include templates/application-modal-edit
     include templates/application-modal-remove
     include templates/application-instance-modal-edit
+    include templates/application-instance-modal-remove

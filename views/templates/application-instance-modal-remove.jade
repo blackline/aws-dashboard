@@ -1,13 +1,12 @@
-script#template-application-modal-remove(type="text/template").
+script#template-application-instance-modal-remove(type="text/template").
     <div class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3>Remove this Application?</h3>
+            <h3>Remove an Instance</h3>
         </div>
         <div class="modal-body">
-            Are you sure you want to remove the <%= name %> application?
-            <form style="display: none">
-                <input type="hidden" name="id" value="<%= id  %>" >
+            <form class="form-horizontal">
+                Are you sure you want to remove this instance?
             </form>
         </div>
         <div class="modal-footer">

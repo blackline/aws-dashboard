@@ -1,6 +1,11 @@
 extends layout
 
 block content
-    button(class="add-application btn btn-success pull-right")
-        i(class="icon-plus")
+    div.row-fluid
+        h1
+            button(class="add-application btn btn-success pull-right")
+                i(class="icon-plus", style="padding-right: 5px")
+                | Add an Application
+            | AWS Dashboard
+
     div#applications
