@@ -17,7 +17,10 @@ $(function(){
      */
     var ApplicationList = Backbone.Firebase.Collection.extend({
         model: Application,
-        firebase: firebaseConnection.child('applications')
+        firebase: firebaseConnection.child('applications'),
+        comparator: function (application) {
+            return strtolower(application.get('name'));
+        }
     });
 
     /**
@@ -40,12 +43,14 @@ $(function(){
     var ApplicationView = Backbone.View.extend({
         template: _.template($('#template-application').html()),
         templateApplicationModal: _.template($('#template-application-modal-edit').html()),
+        templateApplicationRemoveModal: _.template($('#template-application-modal-remove').html()),
         templateApplicationInstanceModal: _.template($('#template-application-instance-modal-edit').html()),
 
         modal: null,
 
         events: {
             'click .edit-application': 'editApp',
+            'click .remove-application': 'removeApp',
             'click .add-instance': 'addInstance',
             'click .remove-instance': 'removeInstance'
         },
@@ -86,9 +91,8 @@ $(function(){
             // Render the modal to the page
             var app = _.defaults(this.model.toJSON(), {
                 id: uniqid(),
-                serial: 0,
-                service: '',
                 name: '',
+                serial: 0,
                 uri: ''
             });
             this.modal = $(this.templateApplicationModal(app)).appendTo('body');
@@ -113,7 +117,7 @@ $(function(){
                 id: form.id,
                 name: form.name,
                 uri: form.uri,
-                serial: (parseInt(form.serial) + 1) // serial only used in saveInstance() below
+                serial: (parseInt(form.serial, 10) + 1) // serial only used in saveInstance() below
             });
         },
 
@@ -193,6 +197,33 @@ $(function(){
                 instances: instances,
                 serial: (this.model.get('serial') + 1)
             });
+        },
+
+        removeApp: function (e) {
+            // Render the modal to the page
+            var app = _.defaults(this.model.toJSON(), {
+                id: uniqid(),
+                name: '',
+                serial: 0,
+                uri: ''
+            });
+            this.modal = $(this.templateApplicationRemoveModal(app)).appendTo('body');
+
+            // Save the form when the save button in modal is clicked
+            var self = this;
+            $(this.modal).on('click', '.save', function () {
+                self.model.collection.remove(self.model);
+            });
+            $(this.modal).on('submit', 'form', function(e) { e.preventDefault(); });
+
+            // Destroy the modal after it is closed
+            $(this.modal).on('hidden', function () {
+                $(this).unbind().remove();
+            });
+
+            // Display the modal
+            this.modal.modal();
+            return this;
         }
 
     });
@@ -204,7 +235,21 @@ $(function(){
             this.apps = new ApplicationList();
             this.instances = new InstanceList();
             this.listenTo(this.apps, 'add', this.addOne);
-            this.listenTo(this.apps, 'reset', this.addAll);
+            this.listenTo(this.apps, 'reset', this.resetAll);
+            this.listenTo(this.apps, 'sort', this.resetAll);
+            this.listenTo(this.apps, 'change', this.apps.sort);
+
+            // Add an Application button
+            var self = this;
+            $('.add-application').on('click', function () {
+                var application = new Application({
+                    id: uniqid(),
+                    name: 'a new application',
+                    serial: 0,
+                    uri: ''
+                });
+                self.apps.add(application);
+            });
         },
 
         addOne: function(application) {
@@ -214,6 +259,11 @@ $(function(){
 
         addAll: function() {
             this.apps.each(this.addOne, this);
+        },
+
+        resetAll: function () {
+            this.$el.empty();
+            this.addAll();
         }
     });
 
