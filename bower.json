@@ -7,7 +7,7 @@
         "components"
     ],
     "dependencies": {
-        "backfire": "https://github.com/firebase/backfire.git",
+        "backfire": "https://github.com/blackline/backfire.git#1.0.0",
         "jquery-serialize-object": "~1.0.0",
         "phpjs": "https://github.com/kvz/phpjs.git"
     }
