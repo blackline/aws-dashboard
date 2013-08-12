@@ -1,8 +1,7 @@
 var express = require('express'),
     routes = require('./routes'),
     http = require('http'),
-    path = require('path'),
-    applicationsDaemon = require('./daemons/applications');
+    path = require('path');
 
 var app = express();
 
@@ -33,8 +32,3 @@ app.get('/', routes.index);
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
-
-// start the daemons
-if (process.env.AWS_DAEMON_ENABLED == 1) {
-    applicationsDaemon.init();
-}

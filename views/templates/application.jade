@@ -23,6 +23,7 @@ script#template-application(type="text/template").
                     <col style="width: 175px" />
                     <col style="width: 125px" />
                     <col style="width: 75px" />
+                    <col style="width: 75px" />
                     <col style="width: 150px" />
                     <col style="width: 125px" />
                     <col />
@@ -33,6 +34,7 @@ script#template-application(type="text/template").
                         <th>EC2 Instance Name</th>
                         <th>Service</th>
                         <th>Type</th>
+                        <th>$ / mo</th>
                         <th>State</th>
                         <th>Security Groups</th>
                         <th>Instance ID</th>
@@ -51,6 +53,7 @@ script#template-application(type="text/template").
                             <td><%= instance.details.Tags.Name %></td>
                             <td><%= instance.service %></td>
                             <td><%= instance.details.InstanceType %></td>
+                            <td>$<%= instance.details.cost %></td>
                             <td><%= instance.details.State.Name %></td>
                             <td><%= _.pluck(instance.details.SecurityGroups, 'GroupName').join(', ') %></td>
                             <td><%= instance.details.InstanceId %></td>
@@ -76,6 +79,7 @@ script#template-application(type="text/template").
                     <col style="width: 175px"/>
                     <col style="width: 125px"/>
                     <col style="width: 75px"/>
+                    <col style="width: 75px"/>
                     <col style="width: 150px" />
                     <col style="width: 75px"/>
                     <col style="width: 75px"/>
@@ -88,6 +92,7 @@ script#template-application(type="text/template").
                         <th>RDS Instance Name</th>
                         <th>Service</th>
                         <th>Type</th>
+                        <th>$ / mo</th>
                         <th>State</th>
                         <th>Security Groups</th>
                         <th>Storage</th>
@@ -108,6 +113,7 @@ script#template-application(type="text/template").
                             <td><%= instance.details.DBInstanceIdentifier %></td>
                             <td><%= instance.service %></td>
                             <td><%= instance.details.DBInstanceClass %></td>
+                            <td>$<%= instance.details.cost %></td>
                             <td><%= instance.details.DBInstanceStatus %></td>
                             <td><%= _.pluck(instance.details.DBSecurityGroups, 'DBSecurityGroupName').join(', ') %></td>
                             <td><%= instance.details.AllocatedStorage %>GB</td>
