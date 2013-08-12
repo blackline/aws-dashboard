@@ -8,6 +8,7 @@ Requirements
 
 * A [Heroku](https://www.heroku.com/) account
 * An [Firebase](http://firebase.com/) account
+* A deployed [aws-dashboard-daemon](https://github.com/blackline/aws-dashboard-daemon)
 
 Setup
 =====
