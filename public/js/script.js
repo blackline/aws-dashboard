@@ -133,6 +133,7 @@ $(function(){
             // Create a list of all available instances
             var instancesList = {
                 EC2: [],
+                ElastiCache: [],
                 RDS: []
             };
 
@@ -143,6 +144,8 @@ $(function(){
                     type = 'RDS';
                 } else if (instances[i].has('Hypervisor')) {
                     type = 'EC2';
+                } else if (instances[i].has('CacheClusterId')) {
+                    type = 'ElastiCache';
                 } else {
                     console.log('Unknown instance type', instances[i]);
                 }
@@ -184,6 +187,8 @@ $(function(){
                 product = 'rds';
             } else if (instance.has('PublicDnsName') && instance.get('PublicDnsName').match(/^(ec2)/)) {
                 product = 'ec2';
+            } else if (instance.has('CacheClusterId')) {
+                product = 'elasticache';
             }
 
             var instances;
