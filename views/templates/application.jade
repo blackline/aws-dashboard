@@ -70,6 +70,60 @@ script#template-application(type="text/template").
             <%
         } %>
 
+        <% var elasticacheInstances = _.filter(instances, function(instance) { return (instance.product == 'elasticache'); });
+        if (elasticacheInstances.length > 0) {
+            %>
+            <table class="table table-striped table-bordered">
+                <colgroup>
+                    <col style="width: 175px" />
+                    <col style="width: 175px" />
+                    <col style="width: 125px" />
+                    <col style="width: 75px" />
+                    <col style="width: 75px" />
+                    <col style="width: 75px" />
+                    <col style="width: 200px" />
+                    <col />
+                    <col style="width: 55px;" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>ElastiCache Name</th>
+                        <th>Service</th>
+                        <th>Type</th>
+                        <th>$ / mo</th>
+                        <th>State</th>
+                        <th># Nodes</th>
+                        <th>Engine Version</th>
+                        <th>Address</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i in elasticacheInstances) {
+                        var instance = elasticacheInstances[i];
+                        if (_.isUndefined(instance.details)) {
+                            continue;
+                        }
+                        %>
+                        <tr>
+                            <td><%= instance.details.CacheClusterId %></td>
+                            <td><%= instance.service %></td>
+                            <td><%= instance.details.CacheNodeType %></td>
+                            <td>$<%= number_format(instance.details.cost) %></td>
+                            <td><%= instance.details.CacheClusterStatus %></td>
+                            <td><%= instance.details.NumCacheNodes %></td>
+                            <td><%= instance.details.Engine + " " + instance.details.EngineVersion %></td>
+                            <td><%= (_.isUndefined(instance.details.ConfigurationEndpoint) ? null : instance.details.ConfigurationEndpoint.Address) %></td>
+                            <td>
+                                <button class="btn btn-danger remove-instance" data-instance-id="<%= instance.id %>"><i data-instance-id="<%= instance.id %>" class="icon-trash"></i></button>
+                            </td>
+                        </tr>
+                        <%
+                    } %>
+                </tbody>
+            </table>
+        <% } %>
+
         <% var rdsInstances = _.filter(instances, function(instance) { return (instance.product == 'rds'); });
         if (rdsInstances.length > 0) {
             %>
@@ -130,57 +184,4 @@ script#template-application(type="text/template").
             </table>
         <% } %>
 
-        <% var elasticacheInstances = _.filter(instances, function(instance) { return (instance.product == 'elasticache'); });
-        if (elasticacheInstances.length > 0) {
-            %>
-            <table class="table table-striped table-bordered">
-                <colgroup>
-                    <col style="width: 175px" />
-                    <col style="width: 175px" />
-                    <col style="width: 125px" />
-                    <col style="width: 75px" />
-                    <col style="width: 75px" />
-                    <col style="width: 75px" />
-                    <col style="width: 200px" />
-                    <col />
-                    <col style="width: 55px;" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>ElastiCache Name</th>
-                        <th>Service</th>
-                        <th>Type</th>
-                        <th>$ / mo</th>
-                        <th>State</th>
-                        <th># Nodes</th>
-                        <th>Engine Version</th>
-                        <th>Address</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (var i in elasticacheInstances) {
-                        var instance = elasticacheInstances[i];
-                        if (_.isUndefined(instance.details)) {
-                            continue;
-                        }
-                        %>
-                        <tr>
-                            <td><%= instance.details.CacheClusterId %></td>
-                            <td><%= instance.service %></td>
-                            <td><%= instance.details.CacheNodeType %></td>
-                            <td>$<%= number_format(instance.details.cost) %></td>
-                            <td><%= instance.details.CacheClusterStatus %></td>
-                            <td><%= instance.details.NumCacheNodes %></td>
-                            <td><%= instance.details.Engine + " " + instance.details.EngineVersion %></td>
-                            <td><%= (_.isUndefined(instance.details.ConfigurationEndpoint) ? null : instance.details.ConfigurationEndpoint.Address) %></td>
-                            <td>
-                                <button class="btn btn-danger remove-instance" data-instance-id="<%= instance.id %>"><i data-instance-id="<%= instance.id %>" class="icon-trash"></i></button>
-                            </td>
-                        </tr>
-                        <%
-                    } %>
-                </tbody>
-            </table>
-        <% } %>
         <hr />
