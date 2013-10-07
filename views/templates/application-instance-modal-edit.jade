@@ -12,6 +12,10 @@ script#template-application-instance-modal-edit(type="text/template").
                         <select name="id">
                             <option value="">--- Select an Instance ---</option>
                             <% for (var type in list) {
+                                if (list[type].length === 0) {
+                                    continue;
+                                }
+
                                 %>
                                 <optgroup label="<%= type %>">
                                     <%
